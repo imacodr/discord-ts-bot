@@ -6,7 +6,7 @@ import fs from "fs";
 const commands = [];
 const commandFiles = fs
   .readdirSync("src/commands")
-  .filter((file) => file.endsWith(".ts"));
+  .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
 
 // Place your client and guild ids here
 const clientId = process.env.CLIENTID as string;
