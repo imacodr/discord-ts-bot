@@ -39,6 +39,13 @@ async function execute(interaction: CommandInteraction) {
       .setPlaceholder("e.g https://i.imgur.com/...")
       .setRequired(false);
 
+    const ping = new TextInputComponent()
+      .setCustomId("ping")
+      .setLabel("Ping? (true, false)")
+      .setStyle("SHORT")
+      .setPlaceholder("e.g true")
+      .setRequired(false);
+
     const first = new MessageActionRow<ModalActionRowComponent>().addComponents(
       title
     );
@@ -47,8 +54,10 @@ async function execute(interaction: CommandInteraction) {
     const third = new MessageActionRow<ModalActionRowComponent>().addComponents(
       image
     );
+    const fourth =
+      new MessageActionRow<ModalActionRowComponent>().addComponents(ping);
 
-    modal.addComponents(first, second, third);
+    modal.addComponents(first, second, third, fourth);
 
     toSend = await interaction.client.channels.cache.get(
       interaction.options.data[0].value
@@ -83,8 +92,13 @@ async function modal(interaction: ModalSubmitInteraction) {
       announceEmbed.setImage(interaction.fields.getTextInputValue("image"));
     }
 
-    // @ts-ignore
-    toSend?.send({ embeds: [announceEmbed] });
+    if (interaction.fields.getTextInputValue("ping") === "true") {
+      // @ts-ignore
+      await toSend?.send({ content: "@everyone", embeds: [announceEmbed] });
+    } else {
+      // @ts-ignore
+      toSend?.send({ embeds: [announceEmbed] });
+    }
 
     return interaction.reply({
       content: "Successfully sent!",
