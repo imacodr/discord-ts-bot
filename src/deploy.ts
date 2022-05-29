@@ -1,11 +1,12 @@
 import { REST } from "@discordjs/rest";
-import { SlashCommandBuilder } from "@discordjs/builders";
 import { Routes } from "discord-api-types/v9";
 import fs from "fs";
+import path from "path";
 
 const commands = [];
+const commandsPath = path.join(__dirname, "commands");
 const commandFiles = fs
-  .readdirSync("src/commands")
+  .readdirSync(commandsPath)
   .filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
 
 // Place your client and guild ids here

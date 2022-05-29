@@ -96,7 +96,7 @@ async function modal(interaction: ModalSubmitInteraction) {
 export default {
   data: new SlashCommandBuilder()
     .setName("announce")
-    .setDescription("Team Only | Announce embeds to the server")
+    .setDescription("🛹 Team Only | Announce embeds to the server")
     .addStringOption((option) =>
       option
         .setName("channel")
