@@ -1,5 +1,4 @@
-import { REST } from "@discordjs/rest";
-import { Routes } from "discord-api-types/v9";
+import { REST, Routes } from "discord.js";
 import fs from "fs";
 import path from "path";
 
@@ -15,10 +14,11 @@ const guildId = process.env.GUILDID as string;
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
+  //@ts-ignore
   commands.push(command.default.data.toJSON());
 }
 
-const rest = new REST({ version: "9" }).setToken(process.env.TOKEN as string);
+const rest = new REST({ version: "10" }).setToken(process.env.TOKEN as string);
 
 (async () => {
   try {

@@ -1,16 +1,25 @@
 import { config as dotEnvConfig } from "dotenv";
-import { Client, ClientOptions, Collection, Intents } from "discord.js";
+import {
+  ActivityType,
+  Client,
+  ClientOptions,
+  Collection,
+  GatewayIntentBits,
+} from "discord.js";
+// @ts-ignore
 import path from "path";
 import fs from "fs";
+import { Interaction } from "discord.js";
 dotEnvConfig();
 
-class SK8Client extends Client {
+class codrClient extends Client {
   public commands: Collection<string, any>;
 
   constructor(options: ClientOptions) {
     super(options);
 
     this.commands = new Collection();
+
     const commandsPath = path.join(__dirname, "commands");
     const commandFiles = fs
       .readdirSync(commandsPath)
@@ -24,20 +33,23 @@ class SK8Client extends Client {
   }
 }
 
-const client = new SK8Client({
-  intents: [Intents.FLAGS.GUILDS],
+const client = new codrClient({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMembers,
+  ],
 });
 
 client.once("ready", () => {
-  client.user?.setActivity("S K A T E", {
-    type: "PLAYING",
-    url: "https://sk8block.com",
+  const ACTIVITY = "for /help";
+  client.user?.setActivity(ACTIVITY, {
+    type: ActivityType.Watching,
   });
-  client.user?.setStatus("dnd");
   require("./deploy");
 });
 
-client.on("interactionCreate", async (interaction) => {
+client.on("interactionCreate", async (interaction: Interaction) => {
   if (interaction.isCommand()) {
     const command = client.commands?.get(interaction.commandName);
 
