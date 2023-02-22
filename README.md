@@ -1,1 +1,1 @@
-# SK8rBot Code
+# Custom discord ts bot
